@@ -1,0 +1,94 @@
+<div class="employee-container">
+  <header>
+    <img src="https://media.licdn.com/dms/image/D4D0BAQE_XNAXKYfL9A/company-logo_200_200/0/1684174442320/enwage_inc_logo?e=2147483647&v=beta&t=Pze6ZQ4LU_J3Ve7grBCCPaxsqkLpHRNtgN9c3XxG4HA" alt="Enwage" class="logo" >
+    <div class="user-menu">
+      <img src="https://static.thenounproject.com/png/363640-200.png" alt="User" class="avatar">
+      <span class="dropdown-arrow" [matMenuTriggerFor]="userMenu">▼</span>
+    </div>
+  </header>
+
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item >Logout</button>
+  </mat-menu>
+  <hr style="border: 1px solid black;">
+
+  <h1>Employees</h1>
+
+  <div class="actions">
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search"
+        (ngModelChange)="onSearch($event)"
+        class="search-input"
+      />
+    </div>
+    <button mat-raised-button color="primary" (click)="openDialog()">
+      + Add Details
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="employeeDataSource" matSort class="employee-table mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="clientName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+      <td mat-cell *matCellDef="let element">{{ element.clientName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="yearsOfExperience">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Years of Experience</th>
+      <td mat-cell *matCellDef="let element">
+        {{ getYearsOfExperience(element.experienceStartDate, element.experienceEndDate) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+      <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="hourlyRate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.changeState; else normalRate">
+          {{ element.hourlyRate | number:'1.0-2' }}%
+        </ng-container>
+        <ng-template #normalRate>
+          {{ element.hourlyRate | currency }}
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="openDialog(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteEmployee(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="totalCount"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[3, 5, 10, totalCount]"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</div>

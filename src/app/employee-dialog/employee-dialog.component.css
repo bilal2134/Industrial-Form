@@ -1,0 +1,81 @@
+.mat-datepicker-content {
+  position: relative !important;
+  z-index: 1000;
+}
+
+.mat-select-panel {
+  position: relative !important;
+  z-index: 1000;
+}
+
+.cdk-overlay-container {
+  z-index: 1500 !important;
+}
+
+
+.dialog-container {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.file-upload {
+  border: 1px dashed #ccc;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.file-item span {
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+button[mat-raised-button] {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.disabled-button {
+  background-color: grey !important;
+  color: white !important;
+}

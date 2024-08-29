@@ -1,0 +1,259 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h1 mat-dialog-title>
+      <mat-icon>{{ data?.id ? "edit" : "add" }}</mat-icon>
+      {{ data?.id ? "Edit" : "Enter" }} Details
+    </h1>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="employeeForm" class="employee-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" placeholder="Enter name" />
+          <mat-error *ngIf="employeeForm.get('name')?.hasError('numberInName')">
+            Name cannot contain numbers
+          </mat-error>
+          <mat-error *ngIf="employeeForm.get('name')?.hasError('required')"
+            >Name is required</mat-error
+          >
+          <mat-error *ngIf="employeeForm.get('name')?.hasError('minlength')"
+            >Name must be at least 3 characters long</mat-error
+          >
+          <mat-error *ngIf="employeeForm.get('name')?.hasError('maxlength')"
+            >Name cannot exceed 30 characters</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter email" />
+            <mat-error *ngIf="employeeForm.get('email')?.hasError('emailTaken')">Email is already taken</mat-error>
+
+          <mat-error *ngIf="employeeForm.get('email')?.hasError('required')"
+            >Email is required</mat-error
+          >
+          <mat-error *ngIf="employeeForm.get('email')?.hasError('email')"
+            >Invalid email format</mat-error
+          >
+          <mat-error
+            *ngIf="employeeForm.get('email')?.hasError('invalidEmailFormat')"
+            >Invalid email domain</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Client</mat-label>
+          <mat-select
+            [(value)]="_clientSettedValue"
+            (selectionChange)="ClientChanged($event)"
+            placeholder="Select Client"
+          >
+            <mat-option *ngFor="let client of clients" [value]="client.name">{{
+              client.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>State</mat-label>
+          <mat-select formControlName="states" multiple placeholder="Select">
+            <mat-option *ngFor="let state of states" [value]="state.id">{{
+              state.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            matInput
+            [matDatepicker]="dobPicker"
+            formControlName="dateOfBirth"
+            placeholder="Select"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dobPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dobPicker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              employeeForm.get('dateOfBirth')?.hasError('invalidDateOfBirth')
+            "
+          >
+            Date of birth should be at least 18 years ago
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Experience Start</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startPicker"
+            formControlName="experienceStartDate"
+            placeholder="Select"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Experience End</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endPicker"
+            formControlName="experienceEndDate"
+            placeholder="Select"
+            [disabled]="isPresent"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="endPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div
+        class="form-row"
+        *ngIf="
+          areBothDatesEntered() && employeeForm.hasError('invalidDateRange')
+        "
+      >
+        <mat-error> Experience start date must be before end date </mat-error>
+      </div>
+
+      <div class="form-row">
+        <mat-checkbox formControlName="isPresent" (change)="toggleIsPresent()"
+          >Present</mat-checkbox
+        >
+        <mat-form-field appearance="outline" class="years-of-experience">
+          <mat-label>Years of Experience</mat-label>
+          <input matInput formControlName="yearsOfExperience" readonly />
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-checkbox formControlName="changeState" (change)="onChangeState()"
+          >Change State</mat-checkbox
+        >
+        <mat-form-field appearance="outline">
+          <mat-label>{{
+            employeeForm.get("changeState")?.value
+              ? "Percentage"
+              : "Hourly Rate"
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="hourlyRate"
+            type="number"
+            [placeholder]="
+              employeeForm.get('changeState')?.value
+                ? 'Enter Percentage'
+                : 'Enter Hourly Rate'
+            "
+          />
+          <span matSuffix>{{
+            employeeForm.get("changeState")?.value ? "%" : "$"
+          }}</span>
+          <mat-error *ngIf="employeeForm.get('hourlyRate')?.hasError('min')">
+            {{
+              employeeForm.get("changeState")?.value
+                ? "Percentage must be at least 1%"
+                : "Hourly rate must be positive"
+            }}
+          </mat-error>
+          <mat-error *ngIf="employeeForm.get('hourlyRate')?.hasError('max')">
+            Percentage must be at most 100%
+          </mat-error>
+          <mat-error
+            *ngIf="employeeForm.get('hourlyRate')?.hasError('invalidDecimal')"
+          >
+            Hourly rate must have at most 2 decimal places
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-label>Select Gender</mat-label>
+        <mat-radio-group formControlName="gender">
+          <mat-radio-button value="male">Male</mat-radio-button>
+          <mat-radio-button value="female">Female</mat-radio-button>
+          <mat-radio-button value="other">Other</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-row">
+        <mat-label>Attachments</mat-label>
+        <div class="file-upload">
+          <input type="file" (change)="onUploadFiles($event)" multiple />
+          <div class="file-list">
+            <!-- Existing files for editing an employee -->
+            <div *ngFor="let file of files" class="file-item">
+              <span (click)="onDownloadFile(file)">{{ file.fileName }}</span>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="onDeleteFile(file.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <!-- Newly uploaded files -->
+            <div
+              *ngFor="let file of uploadedFiles; let i = index"
+              class="file-item"
+            >
+              <span>{{ file.name }}</span>
+              <ng-container [ngSwitch]="file.type.split('/')[0]">
+                <img
+                  *ngSwitchCase="'image'"
+                  [src]="getSafeUrl(file)"
+                  alt="Uploaded image"
+                  style="max-width: 200px; max-height: 200px"
+                />
+                <a *ngSwitchDefault [href]="getSafeUrl(file)" target="_blank"
+                  >View File</a
+                >
+              </ng-container>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="onDeleteUploadedFile(i)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSave()"
+      [disabled]="employeeForm.invalid"
+      [ngClass]="{ 'disabled-button': employeeForm.invalid }"
+    >
+      {{ employeeForm.invalid ? "Save" : "Save" }}
+    </button>
+  </mat-dialog-actions>
+</div>

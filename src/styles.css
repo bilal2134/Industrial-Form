@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css'; /* Existing theme */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; /* Dark theme */
+
+/* Apply dark theme when dark mode is enabled */
+body.dark-mode {
+  @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .mat-dialog-container {
+  background-color: #424242;
+  color: #ffffff;
+}
+
+/* Add more styles as needed */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.success-snackbar {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  .error-snackbar {
+    background: #F44336;
+    color: white;
+  }

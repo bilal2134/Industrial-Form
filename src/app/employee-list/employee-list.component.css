@@ -1,0 +1,128 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.employee-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding: 8px 30px 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.employee-table th, .employee-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.employee-table thead {
+  background-color: #f5f5f5;
+}
+
+.sort-arrow {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+mat-paginator {
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+button[mat-raised-button] {
+  background-color: #3f51b5;
+  color: white;
+}
+
+button[mat-icon-button] {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
